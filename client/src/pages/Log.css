@@ -1,0 +1,110 @@
+.log-page { display: flex; flex-direction: column; gap: 14px; }
+
+.log-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-row select,
+.filter-row input[type="date"] {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+.filter-row select:focus,
+.filter-row input:focus { border-color: var(--accent); }
+
+.toolbar-right { display: flex; align-items: center; gap: 10px; }
+.log-count { font-size: 12px; color: var(--text-faint); }
+
+.log-summary-bar {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  background: var(--green-bg);
+  border-radius: var(--radius-sm);
+  color: var(--green);
+}
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.log-table thead tr {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.log-table th {
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.log-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.log-table tbody tr:last-child td { border-bottom: none; }
+.log-table tbody tr:hover { background: var(--bg-secondary); }
+.row-expense td { opacity: 0.75; }
+.row-expense:hover td { opacity: 1; }
+
+.td-service { font-weight: 500; max-width: 160px; }
+.mono { font-family: 'DM Mono', monospace; }
+.faint { color: var(--text-faint); }
+.center { text-align: center; }
+.bold { font-weight: 500; }
+
+.del-btn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+tr:hover .del-btn { opacity: 1; }
+.del-btn:hover { color: var(--red); background: var(--red-bg); }
+
+.log-state {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.page-info { font-size: 13px; color: var(--text-muted); }
