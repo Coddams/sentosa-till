@@ -1,5 +1,31 @@
 .log-page { display: flex; flex-direction: column; gap: 14px; }
 
+/* Cycle preset buttons */
+.preset-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.1s;
+  white-space: nowrap;
+}
+.preset-btn:hover { background: var(--bg-secondary); color: var(--text); }
+.preset-btn.active {
+  background: var(--blue-bg);
+  color: var(--blue);
+  border-color: #93c5fd;
+}
+
 .log-toolbar {
   display: flex;
   align-items: center;
@@ -34,7 +60,6 @@
 
 .log-summary-bar {
   font-size: 13px;
-  color: var(--text-muted);
   padding: 8px 14px;
   background: var(--green-bg);
   border-radius: var(--radius-sm);

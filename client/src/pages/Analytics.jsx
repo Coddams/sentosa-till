@@ -6,11 +6,16 @@ import './Analytics.css'
 
 const PERIODS = [
   { key: 'today', label: 'Today' },
-  { key: 'week',  label: 'This week' },
-  { key: 'month', label: 'This month' },
+  { key: 'week',  label: 'Last 7 days' },
+  { key: 'month', label: 'This cycle' },   // billing cycle 28th→27th
   { key: 'year',  label: 'This year' },
   { key: 'all',   label: 'All time' },
 ]
+
+function formatCycleDate(iso) {
+  if (!iso) return ''
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+}
 
 function MetricCard({ label, value, sub, color }) {
   return (
@@ -33,7 +38,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 
 export default function Analytics() {
-  const [period, setPeriod] = useState('today')
+  const [period, setPeriod] = useState('month') // default to current billing cycle
   const [summary, setSummary] = useState(null)
   const [byService, setByService] = useState([])
   const [daily, setDaily] = useState([])
@@ -60,6 +65,7 @@ export default function Analytics() {
   if (loading) return <div className="analytics-loading">Loading analytics…</div>
 
   const net = summary?.net ?? 0
+  const cycleDates = summary?.cycleDates
 
   return (
     <div className="analytics">
@@ -74,6 +80,20 @@ export default function Analytics() {
           </button>
         ))}
       </div>
+
+      {/* Billing cycle label — only shown when "This cycle" is selected */}
+      {period === 'month' && cycleDates && (
+        <div className="cycle-banner">
+          <span className="cycle-icon">📅</span>
+          <span>
+            Current billing cycle: &nbsp;
+            <strong>{formatCycleDate(cycleDates.start)}</strong>
+            &nbsp;→&nbsp;
+            <strong>{formatCycleDate(cycleDates.end)}</strong>
+          </span>
+          <span className="cycle-note">Remittance due 27th</span>
+        </div>
+      )}
 
       <div className="metrics-grid">
         <MetricCard
@@ -116,7 +136,7 @@ export default function Analytics() {
             <LineChart data={daily} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
               <XAxis dataKey="date" tick={{ fontSize: 10, fill: 'var(--text-faint)' }} tickLine={false} axisLine={false} interval="preserveStartEnd" />
-              <YAxis tick={{ fontSize: 10, fill: 'var(--text-faint)' }} tickLine={false} axisLine={false} tickFormatter={v => '₦'+v.toLocaleString()} width={70} />
+              <YAxis tick={{ fontSize: 10, fill: 'var(--text-faint)' }} tickLine={false} axisLine={false} tickFormatter={v => '₦' + v.toLocaleString()} width={70} />
               <Tooltip content={<CustomTooltip />} />
               <Line type="monotone" dataKey="total" stroke="var(--accent)" strokeWidth={2} dot={false} />
             </LineChart>
@@ -129,7 +149,7 @@ export default function Analytics() {
           <div className="section-label">Revenue by service</div>
           <ResponsiveContainer width="100%" height={Math.max(200, byService.length * 36)}>
             <BarChart data={byService} layout="vertical" margin={{ top: 0, right: 60, left: 0, bottom: 0 }}>
-              <XAxis type="number" tick={{ fontSize: 10, fill: 'var(--text-faint)' }} tickLine={false} axisLine={false} tickFormatter={v => '₦'+v.toLocaleString()} />
+              <XAxis type="number" tick={{ fontSize: 10, fill: 'var(--text-faint)' }} tickLine={false} axisLine={false} tickFormatter={v => '₦' + v.toLocaleString()} />
               <YAxis type="category" dataKey="service" tick={{ fontSize: 12, fill: 'var(--text)' }} tickLine={false} axisLine={false} width={130} />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="total" fill="var(--accent)" radius={[0, 4, 4, 0]} label={{ position: 'right', formatter: v => fmt(v), fontSize: 11, fill: 'var(--text-muted)' }} />
